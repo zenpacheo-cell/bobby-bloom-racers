@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bobby Bloom Racers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="topbar" aria-label="Game header">
+        <div>
+          <p class="eyebrow">story kart adventure</p>
+          <h1>Bobby Bloom Racers</h1>
+        </div>
+        <div class="hud" aria-label="Current race stats">
+          <span id="questHud">Quest 1 / 6</span>
+          <span id="lapHud">Lap 1 / 3</span>
+          <span id="powerHud">Power: none</span>
+          <span id="starHud">Stars: 0</span>
+        </div>
+      </section>
+
+      <section class="game-layout">
+        <aside class="panel roster-panel">
+          <div class="panel-title">
+            <span>Racers</span>
+            <button id="randomRacer" class="icon-button" type="button" title="Random racer">?</button>
+          </div>
+          <div id="characterGrid" class="character-grid" aria-label="Choose a racer"></div>
+        </aside>
+
+        <section class="stage">
+          <canvas id="gameCanvas" width="960" height="640" aria-label="Bobby Bloom Racers game canvas"></canvas>
+          <div id="overlay" class="overlay">
+            <div class="story-card">
+              <p id="storyKicker" class="eyebrow">Chapter 1</p>
+              <canvas id="selectedPortrait" class="selected-portrait" width="160" height="160" aria-label="Selected character portrait"></canvas>
+              <h2 id="storyTitle">Pink Blossom Boulevard</h2>
+              <div id="storyText" class="story-copy"></div>
+              <button id="startRace" class="primary-button" type="button">Start Game</button>
+            </div>
+          </div>
+          <div class="mobile-pad" aria-label="Mobile controls">
+            <button data-control="left" type="button">A</button>
+            <button data-control="up" type="button">W</button>
+            <button data-control="right" type="button">D</button>
+            <button data-control="down" type="button">S</button>
+            <button data-control="drift" type="button">Drift</button>
+            <button data-control="power" type="button">Power</button>
+          </div>
+        </section>
+
+        <aside class="panel map-panel">
+          <div class="panel-title">
+            <span>Quest Map</span>
+            <button id="muteToggle" class="icon-button" type="button" title="Toggle sound">♪</button>
+          </div>
+          <div id="mapList" class="map-list" aria-label="Choose a map"></div>
+          <div class="controls">
+            <p><b>Move</b> W A S D</p>
+            <p><b>Honk</b> H</p>
+            <p><b>Drift</b> Shift</p>
+            <p><b>Fly</b> hit glowing ramps</p>
+            <p><b>Power</b> Space</p>
+          </div>
+          <div class="leaderboard">
+            <h3>Top 10</h3>
+            <ol id="leaderboardList"></ol>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="game.js"></script>
+  </body>
+</html>
