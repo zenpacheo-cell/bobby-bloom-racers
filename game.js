@@ -1,43 +1,696 @@
-const subjects=[["math","Mathematics","π","#6d91b0"],["english","English","Aa","#ba7d75"],["science","Science","⚗","#65977f"],["ap","Aralin Panlipunan","AP","#b78d58"],["filipino","Filipino","ñ","#9b79a7"]];
-const banks={
-math:[["What is the slope-intercept form of a line?","y = mx + b"],["What does m represent in y = mx + b?","The slope"],["What does b represent?","The y-intercept"],["What is the slope formula?","(y₂ - y₁) / (x₂ - x₁)"],["What does a positive slope show?","A line rising from left to right"],["What does a negative slope show?","A line falling from left to right"],["What is the slope of a horizontal line?","0"],["What is the slope of a vertical line?","Undefined"],["What is an equation?","A statement that two expressions are equal"],["What is a variable?","A symbol that represents an unknown value"],["What is a coefficient?","A number multiplied by a variable"],["What is a constant?","A value that does not change"],["How do you isolate a variable?","Use inverse operations on both sides"],["What is the distributive property?","a(b + c) = ab + ac"],["What is the solution of an equation?","A value that makes the equation true"]],
-english:[["What is a metaphor?","A direct comparison without using like or as"],["What is the purpose of a thesis statement?","To state the main argument or idea"],["What does context clue mean?","A hint in the text that helps define a word"],["What is a simile?","A comparison using like or as"],["What is personification?","Giving human qualities to non-human things"],["What is hyperbole?","An intentional exaggeration"],["What is imagery?","Language that appeals to the senses"],["What is the main idea?","The central point of a text"],["What is supporting evidence?","Details that strengthen a claim"],["What is a topic sentence?","A sentence that states a paragraph's focus"],["What is a synonym?","A word with a similar meaning"],["What is an antonym?","A word with an opposite meaning"],["What is a primary source?","An original account or document"],["What is tone?","The writer's attitude toward a subject"],["What is a conclusion?","The ending that summarizes or closes an idea"]],
-science:[["What is the basic unit of life?","The cell"],["Which organelle controls cell activities?","The nucleus"],["What process allows plants to make food?","Photosynthesis"],["What does the cell membrane do?","Controls what enters and leaves the cell"],["What is the function of mitochondria?","Release energy from food"],["What do chloroplasts contain?","Chlorophyll"],["What is an ecosystem?","Living things interacting with their environment"],["What is a producer?","An organism that makes its own food"],["What is a consumer?","An organism that eats other organisms"],["What is a food chain?","A sequence showing how energy moves"],["What is matter?","Anything that has mass and occupies space"],["What is an atom?","The smallest unit of an element"],["What is a force?","A push or a pull"],["What is velocity?","Speed in a specific direction"],["What is gravity?","A force that attracts objects toward each other"]],
-ap:[["Ano ang pangunahing layunin ng pamahalaan?","Paglingkuran at protektahan ang mamamayan"],["Ano ang ibig sabihin ng kabihasnan?","Maunlad na pamumuhay at organisadong lipunan"],["Ano ang primary source?","Orihinal na tala o bagay mula sa panahong pinag-aaralan"],["Ano ang secondary source?","Pagsusuri o paliwanag batay sa ibang sanggunian"],["Ano ang kultura?","Kabuuang paraan ng pamumuhay ng isang pangkat"],["Ano ang ekonomiya?","Sistema ng paggawa at paggamit ng yaman"],["Ano ang heograpiya?","Pag-aaral ng lugar at ugnayan ng tao sa kapaligiran"],["Ano ang migrasyon?","Paglipat ng tao mula sa isang lugar patungo sa iba"],["Ano ang kolonyalismo?","Pagkontrol ng isang bansa sa ibang teritoryo"],["Ano ang soberanya?","Kapangyarihan ng estado na mamahala sa sarili"],["Ano ang demokrasya?","Pamahalaang nakabatay sa pakikilahok ng mamamayan"],["Ano ang konstitusyon?","Pangunahing batas ng isang bansa"],["Ano ang karapatang pantao?","Pangunahing karapatang taglay ng bawat tao"],["Ano ang globalisasyon?","Lumawak na ugnayan ng mga bansa"],["Ano ang responsableng mamamayan?","Taong nakikilahok at tumutupad sa tungkulin sa lipunan"]],
-filipino:[["Ano ang pang-uri?","Salitang naglalarawan sa pangngalan o panghalip"],["Ano ang talinghaga?","Masining at hindi literal na pagpapahayag"],["Ano ang pangunahing ideya?","Pinakamahalagang mensahe ng teksto"],["Ano ang pangngalan?","Salitang tumutukoy sa tao, bagay, hayop, lugar, o pangyayari"],["Ano ang panghalip?","Salitang pamalit sa pangngalan"],["Ano ang pandiwa?","Salitang nagsasaad ng kilos o pangyayari"],["Ano ang pang-abay?","Salitang nagbibigay-turing sa pandiwa, pang-uri, o kapwa pang-abay"],["Ano ang simuno?","Paksa ng pangungusap"],["Ano ang panaguri?","Bahaging nagsasabi tungkol sa simuno"],["Ano ang kasingkahulugan?","Salitang magkapareho o magkalapit ang kahulugan"],["Ano ang kasalungat?","Salitang magkataliwas ang kahulugan"],["Ano ang tayutay?","Masining na paraan ng pagpapahayag"],["Ano ang buod?","Pinaikling paglalahad ng mahahalagang ideya"],["Ano ang pangatnig?","Salitang nag-uugnay ng salita, parirala, o sugnay"],["Ano ang konteksto?","Kalagayan o impormasyong nakapaligid sa isang pahayag"]]
+const canvas = document.querySelector("#gameCanvas");
+const ctx = canvas.getContext("2d");
+ctx.imageSmoothingEnabled = false;
+
+const characters = [
+  ["Mrs. Bobby Brown", "#ff6fae", "#fff0a8", "Rose boost"],
+  ["Candy Belle", "#ff8bd1", "#9effe6", "Sweet speed"],
+  ["Princess Poppy", "#f65a8f", "#ffe36d", "Royal shield"],
+  ["Starla Shine", "#8e79ff", "#fff46a", "Star shot"],
+  ["Cherry Lulu", "#e9385f", "#ffffff", "Cherry dash"],
+  ["Daisy Doll", "#ffd84d", "#77ddb5", "Petal glide"],
+  ["Glitter Gia", "#c36bff", "#7ee4ff", "Spark trail"],
+  ["Moon Mimi", "#5c70d6", "#ffd2f0", "Moon mist"],
+  ["Bella Bow", "#ff91b8", "#f7528d", "Bow trap"],
+  ["Pearl Peach", "#ffb987", "#f6ffff", "Pearl guard"],
+  ["Cupcake Coco", "#d98958", "#ffb6db", "Frosting drift"],
+  ["Violet Vee", "#7b4dff", "#ffd0fb", "Violet burst"],
+  ["Angel Aura", "#86d6ff", "#ffffff", "Wing lift"],
+  ["Ruby Rose", "#cf244d", "#ffd7dd", "Rose bomb"],
+  ["Bobby Rabbit", "#352345", "#d8fcff", "Sabotage"]
+].map(([name, color, accent, skill], id) => ({ id, name, color, accent, skill }));
+
+const maps = [
+  ["Pink Blossom Boulevard", ["#ffd2e5", "#a6f0de", "#fff0a8", "#ff5f9f"], "Win the boulevard race to recover Mrs. Bobby Brown's glitter map.", "Bobby Rabbit painted fake heart arrows on the road."],
+  ["Candy Cloud Circuit", ["#c8ecff", "#ffd8f2", "#ffe36d", "#ff84b7"], "Glide through candy clouds to find the sugar-key clue.", "Sticky lollipop puddles are slowing everyone down."],
+  ["Glitter Garden Speedway", ["#acf2c4", "#f6b8ff", "#ffe477", "#63cdf7"], "Follow butterfly shortcuts and collect the petal compass.", "The garden vines are snapping across the track."],
+  ["Diamond Mall Dash", ["#f7ffff", "#9ee4ff", "#ff9dc8", "#ffe36d"], "Race through boutiques to find Bobby Rabbit's receipt trail.", "Perfume clouds are blocking the racing line."],
+  ["Ballet Castle Raceway", ["#ffd7f2", "#d5c1ff", "#fff9c8", "#ff71a9"], "Spin through the castle halls to unlock the ballroom gate.", "Ribbon traps are falling near the chandeliers."],
+  ["Moonlight Vanity Valley", ["#6e64c9", "#ff9ed1", "#bdf4ff", "#fff07b"], "Final boss race: defeat Bobby Rabbit and save the Bloom Cup.", "Moon mirrors are swapping the roads."]
+].map(([name, colors, clue, sabotage]) => ({ name, colors, clue, sabotage }));
+
+const powerUps = [
+  { name: "Glitter Boost", type: "boost", color: "#ffe36d" },
+  { name: "Heart Shield", type: "shield", color: "#ff6fae" },
+  { name: "Bow Trap", type: "trap", color: "#f7528d" },
+  { name: "Star Wand", type: "shot", color: "#fff46a" },
+  { name: "Angel Wings", type: "wings", color: "#ffffff" },
+  { name: "Rose Bomb", type: "bomb", color: "#cf244d" }
+];
+
+const keys = {};
+let selectedCharacter = 0;
+let selectedMap = 0;
+let raceActive = false;
+let muted = false;
+let tick = 0;
+let message = "Pick a racer, then press Start Game.";
+let messageTimer = 0;
+let stars = 0;
+let finishLocked = false;
+
+const player = {
+  lane: 0,
+  speed: 0,
+  distance: 0,
+  lap: 1,
+  power: null,
+  shield: 0,
+  boost: 0,
+  flying: 0,
+  drift: 0
 };
-let selectedGrade=9,selectedSubject="science",selectedMode="flashcards",currentCard=0,quizIndex=0,score=0,toastTimer,lessonLinks=[],lessonFiles=[];
-let studentProfile=JSON.parse(localStorage.getItem("aralProfile")||"null")||{name:"Zen Student",email:"",grade:9,initials:"ZS",color:"#efb45f"};
-const cardsFor=s=>s.cards||banks[s.subject];
-function cardsFromTranscript(text){const clean=text.replace(/\s+/g," ").trim(),sentences=clean.split(/(?<=[.!?])\s+/).filter(x=>x.length>25);if(!sentences.length)return null;return Array.from({length:15},(_,i)=>[`What key idea should you remember from lesson part ${i+1}?`,sentences[i%sentences.length]])}
-const floranteCards=[["Sino ang sumulat ng Florante at Laura?","Si Francisco Balagtas."],["Ano ang buong pamagat ng akda?","Pinagdaanang Buhay ni Florante at ni Laura sa Kahariang Albanya."],["Anong uri ng panitikan ang Florante at Laura?","Isang awit na pasalaysay at patula."],["Sino ang pangunahing tauhan ng akda?","Si Florante, anak nina Duke Briseo at Prinsesa Floresca."],["Sino ang minamahal ni Florante?","Si Laura, anak ni Haring Linceo."],["Sino ang pangunahing karibal ni Florante?","Si Adolfo, isang mapagkunwaring tauhang naghangad ng kapangyarihan."],["Sino ang nagligtas kay Florante sa gubat?","Si Aladin, isang Morong mandirigma."],["Sino ang minamahal ni Aladin?","Si Flerida."],["Saan naganap ang mahalagang tagpo sa simula ng awit?","Sa madilim at mapanganib na gubat."],["Ano ang kalagayan ni Florante sa gubat?","Nakatali siya sa puno, naghihirap, at nagluluksa."],["Ano ang mahalagang tema ng akda?","Pag-ibig, pagtataksil, kawalang-katarungan, pagkakaibigan, at pag-asa."],["Ano ang ipinapakita ng pagtulong ni Aladin kay Florante?","Maaaring manaig ang kabutihan at pagkakaibigan kahit magkaiba ang pinagmulan."],["Ano ang ipinahihiwatig ng gubat sa akda?","Maaari itong sagisag ng magulo at mapanganib na kalagayan ng lipunan."],["Bakit mahalaga ang Florante at Laura sa panitikang Filipino?","Ipinapakita nito ang masining na pagtula at mga aral tungkol sa lipunan at pagkatao."],["Ano ang isang aral mula sa akda?","Huwag agad magtiwala sa panlabas na anyo; mahalaga ang katapatan, kabutihan, at katarungan."]];
-const populationResourcesCards=[["What is a population in ecology?","A population is a group of organisms of the same species living in the same area at the same time."],["What are resources in an ecosystem?","Resources are materials and conditions organisms need to survive, such as food, water, space, shelter, and sunlight."],["How do limited resources affect population size?","When resources are limited, fewer organisms can survive and reproduce, so population growth slows down or decreases."],["What is carrying capacity?","Carrying capacity is the largest population an environment can support over time with its available resources."],["What can happen when a population exceeds carrying capacity?","Resources may become scarce, competition increases, and the population may decline because some organisms cannot survive or reproduce."],["What is competition?","Competition happens when organisms need the same limited resource, such as food, water, or space."],["What is a limiting factor?","A limiting factor is anything that restricts population growth, including food supply, water, space, disease, predators, and climate."],["How can population growth affect natural resources?","A growing population can increase demand for water, food, land, energy, and other resources."],["What is the difference between renewable and nonrenewable resources?","Renewable resources can be replaced naturally over a relatively short time, while nonrenewable resources form slowly and can be depleted."],["Give two examples of renewable resources.","Sunlight and wind are renewable resources. Water and forests can also be renewable when managed responsibly."],["Give two examples of nonrenewable resources.","Coal and petroleum are nonrenewable resources. Natural gas and many minerals are also nonrenewable."],["Why is conservation important?","Conservation protects resources from waste and overuse so they remain available for people and ecosystems in the future."],["What does sustainable resource use mean?","Sustainable use means meeting present needs while protecting enough resources and ecosystem health for future generations."],["How can students help conserve resources?","Students can reduce waste, reuse materials, recycle properly, save water and electricity, and make responsible choices."],["What is the key relationship between population and resources?","Population size depends on available resources, while changes in population size can also change how quickly resources are used."]];
-function videoLessonCards(){if(lessonLinks.some(link=>link.href.includes("qoBmDdSWSL4")))return floranteCards;if(lessonLinks.some(link=>link.href.includes("J_7ti9aKlV8")))return populationResourcesCards;if(lessonLinks.length||lessonFiles.length)return banks[selectedSubject];return null}
-function quizOptions(cards,index){const correct=cards[index][1],wrong=cards.map(card=>card[1]).filter(answer=>answer!==correct).sort(()=>Math.random()-.5).slice(0,4);return [correct,...wrong].sort(()=>Math.random()-.5)}
-let sets=[{id:"cells",title:"Cells & Their Functions",subject:"science",grade:9,count:15,progress:72},{id:"figures",title:"Figures of Speech",subject:"english",grade:9,count:15,progress:40},{id:"kasaysayan",title:"Early Philippine Societies",subject:"ap",grade:9,count:15,progress:18}];
-const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s),subject=id=>subjects.find(s=>s[0]===id);
-function setView(view){$$(".view").forEach(v=>v.classList.remove("active"));$(`#${view}View`).classList.add("active");$$(".nav-item[data-view]").forEach(n=>n.classList.toggle("active",n.dataset.view===view));const labels={home:["Your study space","Good afternoon, Zen."],create:["Create something new","Study set maker"],library:["Everything in one place","My study library"],study:["Focus mode","Study session"]};$("#pageEyebrow").textContent=labels[view][0];$("#pageTitle").textContent=labels[view][1]}
-function setCard(s){const sub=subject(s.subject);return `<article class="set-card" style="--accent:${sub[3]}"><header><span class="subject-icon">${sub[2]}</span><small>Grade ${s.grade} · ${sub[1]}</small></header><h3>${s.title}</h3><p>${s.count} cards · ${s.progress}% explored</p><div class="progress"><i style="width:${s.progress}%"></i></div><footer><button class="outline-btn" data-study="${s.id}" data-mode="flashcards">Study cards</button><button class="round-btn mini" data-study="${s.id}" data-mode="quiz">✦</button></footer></article>`}
-function renderSets(){$("#recentSets").innerHTML=sets.slice(0,3).map(setCard).join("");$("#librarySets").innerHTML=sets.map(setCard).join("")}
-function renderSubjects(){$("#subjectChoices").innerHTML=subjects.map(s=>`<button class="subject-choice ${s[0]===selectedSubject?"active":""}" data-subject="${s[0]}" style="--accent:${s[3]}"><span>${s[2]}</span><b>${s[1]}</b></button>`).join("")}
-function step(n){$$(".creator-step").forEach(x=>x.classList.toggle("active",+x.dataset.step===n));$("#stepPill").textContent=`Step ${n} of 3`}
-function toast(text){$("#toast").textContent=text;$("#toast").classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("#toast").classList.remove("show"),2200)}
-function modal(eye,title,body){$("#modalEyebrow").textContent=eye;$("#modalTitle").textContent=title;$("#modalBody").innerHTML=body;$("#modal").classList.remove("hidden")}
-function updateProfile(){const first=studentProfile.name.trim().split(/\s+/)[0]||"Student";$$(".avatar").forEach(x=>{x.setAttribute("data-label",studentProfile.initials);x.style.background=studentProfile.color});$(".profile b").setAttribute("data-label",studentProfile.name);$(".profile small").setAttribute("data-label",`Grade ${studentProfile.grade} learner`);if($("#homeView").classList.contains("active"))$("#pageTitle").textContent=`Good afternoon, ${first}.`}
-function profileModal(){modal("Student profile","Make Brain Create yours",`<form id="profileForm" class="profile-form"><div class="gmail-note"><b>Gmail sign-in</b><small>Use your Gmail to identify this profile on this device. Secure Google account sign-in requires Firebase or a backend.</small></div><label>Gmail address<input name="email" type="email" placeholder="student@gmail.com" value="${studentProfile.email}" required></label><label>Display name<input name="name" maxlength="30" value="${studentProfile.name}" required></label><div class="profile-row"><label>Grade<select name="grade">${[7,8,9,10].map(g=>`<option ${g===+studentProfile.grade?"selected":""}>${g}</option>`).join("")}</select></label><label>Initials<input name="initials" maxlength="3" value="${studentProfile.initials}" required></label><label>Theme color<input name="color" type="color" value="${studentProfile.color}"></label></div><button class="primary-btn" type="submit">Save my profile</button></form>`)}
-function startStudy(id,mode){const s=sets.find(x=>x.id===id);selectedSubject=s.subject;selectedMode=mode;currentCard=0;quizIndex=0;score=0;setView("study");if(mode==="quiz")renderQuiz(s);else if(mode==="notes")renderNotes(s);else if(mode==="activities")renderActivities(s);else if(mode==="whiteboard"&&s.subject==="math")renderWhiteboard(s);else renderCards(s)}
-function sourcePanel(s){if(!s.sources?.length)return "";return `<aside class="source-panel"><p class="eyebrow">Connected lesson materials</p>${s.sources.map(x=>`<a href="${x.href||"#"}" ${x.href?'target="_blank" rel="noopener"':""}>${x.href?"↗":"✓"} ${x.label}</a>`).join("")}<small>Sources stay attached to this set. Generated study tools are grounded in processed lesson content.</small></aside>`}
-function renderCards(s){const cards=cardsFor(s),card=cards[currentCard];$("#studyArea").innerHTML=`<section class="study-head"><div><p class="eyebrow">${subject(s.subject)[1]} · Grade ${s.grade}</p><h2>${s.title}</h2></div><button class="outline-btn" data-switch="quiz">Play quiz game ✦</button></section>${sourcePanel(s)}<p class="counter">Card ${currentCard+1} of ${cards.length}</p><button class="flashcard" data-action="flip"><span class="front"><small>Tap to reveal answer</small><b>${card[0]}</b></span><span class="back"><small>Answer</small><b>${card[1]}</b></span></button><div class="study-nav"><button class="outline-btn" data-action="prev-card">← Previous</button><button class="primary-btn" data-action="next-card">Next card →</button></div>`}
-function renderQuiz(s){const cards=cardsFor(s);if(quizIndex>=cards.length){$("#studyArea").innerHTML=`<section class="result panel"><span>✦</span><p class="eyebrow">Quiz complete</p><h2>${score} / ${cards.length}</h2><p>You finished your ${subject(s.subject)[1]} review. Every replay helps the ideas stick.</p><button class="primary-btn" data-action="replay">Play again</button><button class="outline-btn" data-switch="flashcards">Review cards</button></section>`;return}const card=cards[quizIndex],options=quizOptions(cards,quizIndex);$("#studyArea").innerHTML=`<section class="study-head"><div><p class="eyebrow">Challenge quiz · ${subject(s.subject)[1]}</p><h2>${s.title}</h2></div><b class="score">✦ ${score}</b></section>${sourcePanel(s)}<p class="counter">Question ${quizIndex+1} of ${cards.length} · Choose the best answer</p><section class="quiz-card panel"><h2>${card[0]}</h2><div class="answer-grid">${options.map(o=>`<button class="answer" data-answer="${o===card[1]}">${o}</button>`).join("")}</div></section>`}
-function reviewerText(s){const sources=s.sources?.map(x=>`- ${x.label}${x.href?`: ${x.href}`:""}`).join("\n")||"- No lesson material attached";return `${s.title.toUpperCase()}\nGrade ${s.grade} ${subject(s.subject)[1]} Reviewer\n\nCONNECTED MATERIALS\n${sources}\n\nHOW TO USE THIS REVIEWER\nRead the key ideas, explain each answer in your own words, then test yourself using flashcards or the quiz game.\n\nKEY IDEAS AND DEFINITIONS\n${cardsFor(s).map((card,i)=>`${i+1}. ${card[0]}\n   Answer: ${card[1]}\n   Quick check: Write one example or explain this idea in your own words.`).join("\n\n")}\n\nFINAL SELF-CHECK\n- Which three ideas can you explain without looking?\n- Which two ideas need another review?\n- Write one question you would ask your teacher.`}
-function renderNotes(s){$("#studyArea").innerHTML=`<section class="study-head"><div><p class="eyebrow">Reviewer notes · ${subject(s.subject)[1]}</p><h2>${s.title}</h2></div><button class="outline-btn" data-action="copy-notes">Copy notes</button></section>${sourcePanel(s)}<textarea id="reviewerNotes" class="reviewer-notes">${reviewerText(s)}</textarea><p class="muted">You can edit these notes before copying them into your notebook or document.</p>`}
-function renderActivities(s){const cards=cardsFor(s).slice(0,5);$("#studyArea").innerHTML=`<section class="study-head"><div><p class="eyebrow">Book activities · ${subject(s.subject)[1]}</p><h2>${s.title}</h2></div></section>${sourcePanel(s)}<section class="panel activity-sheet"><p class="muted">Answer in your notebook, then check each activity when finished.</p>${cards.map((card,i)=>`<label><input type="checkbox"><span><b>Activity ${i+1}</b><small>${card[0]}</small></span></label>`).join("")}</section>`}
-function renderWhiteboard(s){$("#studyArea").innerHTML=`<section class="study-head"><div><p class="eyebrow">Math whiteboard · Grade ${s.grade}</p><h2>${s.title}</h2></div><button class="outline-btn" data-action="clear-board">Clear board</button></section>${sourcePanel(s)}<p class="muted board-tip">Draw your solution step by step.</p><canvas id="mathBoard" width="900" height="430"></canvas>`;setupBoard()}
-function setupBoard(){const canvas=$("#mathBoard"),ctx=canvas.getContext("2d");ctx.lineCap="round";ctx.lineWidth=3;ctx.strokeStyle="#315f55";let drawing=false;const point=e=>{const r=canvas.getBoundingClientRect(),touch=e.touches?.[0]||e;return[(touch.clientX-r.left)*canvas.width/r.width,(touch.clientY-r.top)*canvas.height/r.height]};const start=e=>{drawing=true;ctx.beginPath();ctx.moveTo(...point(e));e.preventDefault()},move=e=>{if(!drawing)return;ctx.lineTo(...point(e));ctx.stroke();e.preventDefault()},end=()=>drawing=false;canvas.addEventListener("mousedown",start);canvas.addEventListener("mousemove",move);window.addEventListener("mouseup",end);canvas.addEventListener("touchstart",start,{passive:false});canvas.addEventListener("touchmove",move,{passive:false});canvas.addEventListener("touchend",end)}
-function activeSet(){return sets.find(s=>s.subject===selectedSubject)||sets[0]}
-document.addEventListener("click",e=>{const t=e.target.closest("button,a");if(!t)return;if(t.dataset.view){e.preventDefault();setView(t.dataset.view)}if(t.dataset.grade){selectedGrade=+t.dataset.grade;$$("[data-grade]").forEach(b=>b.classList.toggle("active",b===t))}if(t.dataset.subject){selectedSubject=t.dataset.subject;renderSubjects();document.body.classList.toggle("math-selected",selectedSubject==="math")}if(t.dataset.mode){selectedMode=t.dataset.mode;$$("[data-mode]").forEach(b=>b.classList.toggle("active",b===t))}if(t.dataset.study)startStudy(t.dataset.study,t.dataset.mode);if(t.dataset.switch)startStudy(activeSet().id,t.dataset.switch);if(t.dataset.answer){if(t.dataset.answer==="true"){score++;toast("Correct! Nice work.")}else toast("Not quite. Keep going.");quizIndex++;setTimeout(()=>renderQuiz(activeSet()),250)}const a=t.dataset.action;if(a==="step-1")step(1);if(a==="step-2")step(2);if(a==="step-3")step(3);if(a==="close")$("#modal").classList.add("hidden");if(a==="flip")t.classList.toggle("flipped");if(a==="next-card"){currentCard=(currentCard+1)%cardsFor(activeSet()).length;renderCards(activeSet())}if(a==="prev-card"){currentCard=(currentCard+cardsFor(activeSet()).length-1)%cardsFor(activeSet()).length;renderCards(activeSet())}if(a==="copy-notes"){const notes=$("#reviewerNotes");notes.select();navigator.clipboard?.writeText(notes.value).then(()=>toast("Reviewer notes copied")).catch(()=>toast("Notes selected. Press Ctrl+C or Cmd+C to copy."))}if(a==="clear-board"){const board=$("#mathBoard");board.getContext("2d").clearRect(0,0,board.width,board.height);toast("Whiteboard cleared")}if(a==="replay"){quizIndex=0;score=0;renderQuiz(activeSet())}if(a==="generate"){const sub=subject(selectedSubject);let title=$("#setTitle").value.trim()||`${sub[1]} Lesson Review`;const id=`set-${Date.now()}`,sources=[...lessonLinks.map(link=>({label:link.hostname,href:link.href})),...lessonFiles.map(label=>({label}))],cards=cardsFromTranscript($("#transcriptInput").value)||videoLessonCards(),hasUnreadableSource=lessonLinks.length||lessonFiles.length;if(hasUnreadableSource&&!cards){toast("Add captions, notes, or an image description so the study tools match your material.");step(2);return}if(cards===floranteCards&&!$("#setTitle").value.trim())title="Florante at Laura Story Reviewer";sets.unshift({id,title,subject:selectedSubject,grade:selectedGrade,count:(cards||banks[selectedSubject]).length,progress:0,sources,cards});renderSets();toast(cards?"Study tools generated from your lesson material!":"Your subject practice set is ready!");startStudy(id,selectedMode)}if(a==="notifications")toast("You're all caught up.");if(a==="profile")profileModal();if(a==="help")modal("How Aral works","From lesson to study game","<p>Add lesson materials and paste captions, notes, or an image description. Aral uses that readable text for your reviewer, cards, quiz, and activities. A browser-only site cannot understand arbitrary videos or images without text or a backend AI service.</p>")});
-$("#fileInput").addEventListener("change",e=>{lessonFiles=[...e.target.files].map(f=>f.name);$("#fileList").innerHTML=[...e.target.files].map(f=>`<article><span>✓</span><div><b>${f.name}</b><small>${(f.size/1024).toFixed(1)} KB · Ready</small></div></article>`).join("");toast(`${e.target.files.length} file${e.target.files.length===1?"":"s"} added`)});
-function renderLinks(){$("#linkList").innerHTML=lessonLinks.map((link,i)=>`<article><span>↗</span><div><b>${link.hostname}</b><small>${link.href}</small></div><button class="remove-link" data-remove-link="${i}" aria-label="Remove ${link.hostname}">×</button></article>`).join("")}
-$("#linkForm").addEventListener("submit",e=>{e.preventDefault();const input=$("#linkInput");try{const link=new URL(input.value.trim());if(!["http:","https:"].includes(link.protocol))throw new Error();lessonLinks.push(link);input.value="";renderLinks();toast("Lesson link added")}catch{toast("Please enter a valid website link.")}});
-$("#linkList").addEventListener("click",e=>{const button=e.target.closest("[data-remove-link]");if(!button)return;lessonLinks.splice(+button.dataset.removeLink,1);renderLinks();toast("Link removed")});
-$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")$("#modal").classList.add("hidden")});$("#modal").addEventListener("submit",e=>{if(e.target.id!=="profileForm")return;e.preventDefault();const data=new FormData(e.target),email=data.get("email").trim();if(!/@gmail\.com$/i.test(email)){toast("Please use a Gmail address.");return}studentProfile={name:data.get("name").trim(),email,grade:+data.get("grade"),initials:data.get("initials").trim().toUpperCase(),color:data.get("color")};localStorage.setItem("aralProfile",JSON.stringify(studentProfile));updateProfile();$("#modal").classList.add("hidden");toast("Profile saved on this device.")});document.body.classList.toggle("math-selected",selectedSubject==="math");renderSubjects();renderSets();updateProfile();
+
+let rivals = [];
+let pickups = [];
+let hazards = [];
+let shots = [];
+let confetti = [];
+let leaderboard = [];
+
+const characterGrid = document.querySelector("#characterGrid");
+const mapList = document.querySelector("#mapList");
+const overlay = document.querySelector("#overlay");
+const storyKicker = document.querySelector("#storyKicker");
+const storyTitle = document.querySelector("#storyTitle");
+const storyText = document.querySelector("#storyText");
+const selectedPortrait = document.querySelector("#selectedPortrait");
+const startRace = document.querySelector("#startRace");
+const questHud = document.querySelector("#questHud");
+const lapHud = document.querySelector("#lapHud");
+const powerHud = document.querySelector("#powerHud");
+const starHud = document.querySelector("#starHud");
+const leaderboardList = document.querySelector("#leaderboardList");
+
+function renderMenus() {
+  characterGrid.innerHTML = "";
+  characters.forEach((character, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `character-card ${index === selectedCharacter ? "active" : ""}`;
+    button.innerHTML = `<canvas class="avatar" width="96" height="96"></canvas><span class="name">${character.name}</span><span class="trait">${character.skill}</span>`;
+    button.addEventListener("click", () => {
+      selectedCharacter = index;
+      renderMenus();
+      resetRace(true);
+    });
+    characterGrid.appendChild(button);
+    drawPortrait(button.querySelector("canvas"), character);
+  });
+
+  mapList.innerHTML = "";
+  maps.forEach((map, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `map-card ${index === selectedMap ? "active" : ""}`;
+    button.innerHTML = `<span class="map-dot" style="background:${map.colors[3]}"></span><span><b>${map.name}</b><br><small>${map.clue}</small></span>`;
+    button.addEventListener("click", () => {
+      selectedMap = index;
+      renderMenus();
+      resetRace(true);
+    });
+    mapList.appendChild(button);
+  });
+}
+
+function drawPortrait(canvasNode, character) {
+  const a = canvasNode.getContext("2d");
+  a.imageSmoothingEnabled = false;
+  const scale = canvasNode.width / 96;
+  a.clearRect(0, 0, canvasNode.width, canvasNode.height);
+  a.save();
+  a.scale(scale, scale);
+  a.fillStyle = character.accent;
+  a.fillRect(8, 8, 80, 80);
+  a.fillStyle = "#271c32";
+  a.fillRect(18, 18, 60, 60);
+  a.fillStyle = character.color;
+  a.fillRect(24, 22, 48, 48);
+  a.fillStyle = character.accent;
+  a.fillRect(34, 54, 28, 22);
+  a.fillStyle = "#271c32";
+  a.fillRect(34, 38, 8, 8);
+  a.fillRect(54, 38, 8, 8);
+  a.fillRect(40, 55, 16, 5);
+  a.fillStyle = "#fff";
+  a.fillRect(37, 25, 22, 6);
+  a.fillStyle = character.name === "Bobby Rabbit" ? "#352345" : "#ff5f9f";
+  a.fillRect(14, 12, 20, 22);
+  a.fillRect(62, 12, 20, 22);
+  a.fillStyle = "#ffffff";
+  a.fillRect(20, 18, 8, 10);
+  a.fillRect(68, 18, 8, 10);
+  a.restore();
+}
+
+function resetRace(showStory = true) {
+  Object.assign(player, { lane: 0, speed: 0, distance: 0, lap: 1, power: null, shield: 0, boost: 0, flying: 0, drift: 0 });
+  raceActive = false;
+  finishLocked = false;
+  message = "Pick a racer, then press Start Game.";
+  rivals = Array.from({ length: 9 }, (_, i) => ({
+    lane: [-0.78, -0.52, -0.25, 0, 0.25, 0.52, 0.78, -0.12, 0.12][i],
+    distance: 210 + i * 150,
+    speed: 5.1 + Math.random() * 1.1,
+    character: characters[(selectedCharacter + i + 1) % characters.length]
+  }));
+  pickups = Array.from({ length: 24 }, (_, i) => ({
+    lane: [-0.62, 0, 0.62][i % 3],
+    distance: 260 + i * 185,
+    power: powerUps[i % powerUps.length],
+    taken: false
+  }));
+  hazards = Array.from({ length: 22 }, (_, i) => ({
+    lane: [-0.7, -0.25, 0.25, 0.7][i % 4],
+    distance: 340 + i * 210,
+    spin: Math.random() * 6
+  }));
+  shots = [];
+  confetti = [];
+  updateStory();
+  if (showStory) overlay.classList.remove("hidden");
+  updateHud();
+  updateLeaderboard();
+}
+
+function updateStory() {
+  const map = maps[selectedMap];
+  drawPortrait(selectedPortrait, characters[selectedCharacter]);
+  storyKicker.textContent = selectedMap === maps.length - 1 ? "Final Chapter" : `Chapter ${selectedMap + 1}`;
+  storyTitle.textContent = map.name;
+  storyText.textContent = `${characters[selectedCharacter].name} is ready. ${map.clue} Warning: ${map.sabotage}`;
+  startRace.textContent = "Start Game";
+}
+
+function start() {
+  overlay.classList.add("hidden");
+  raceActive = true;
+  finishLocked = false;
+  message = "Race started! Use W A S D.";
+  messageTimer = 160;
+  beep();
+}
+
+function update() {
+  tick++;
+  if (!raceActive) return;
+
+  const throttle = keys.KeyW ? 0.18 : 0;
+  const brake = keys.KeyS ? -0.22 : 0;
+  const steer = (keys.KeyA ? -1 : 0) + (keys.KeyD ? 1 : 0);
+  const drifting = keys.ShiftLeft || keys.ShiftRight;
+  player.speed += throttle + brake;
+  player.speed *= player.flying ? 0.993 : 0.975;
+  player.speed = Math.max(-1.8, Math.min(player.boost ? 13.5 : 8.6, player.speed));
+  player.lane += steer * (drifting ? 0.036 : 0.026) * Math.max(0.35, Math.abs(player.speed) / 4);
+  player.lane *= 0.992;
+  player.lane = Math.max(-1.18, Math.min(1.18, player.lane));
+  player.distance += player.speed;
+  player.drift = drifting && steer ? 1 : Math.max(0, player.drift - 0.04);
+
+  if (player.boost) player.boost--;
+  if (player.shield) player.shield--;
+  if (player.flying) player.flying--;
+  if (messageTimer) messageTimer--;
+
+  if (Math.floor(player.distance / 1800) + 1 > player.lap) {
+    player.lap++;
+    say(player.lap > 3 ? "Quest complete!" : `Lap ${player.lap}!`);
+  }
+
+  rivals.forEach((rival) => {
+    rival.distance += rival.speed;
+    rival.lane += Math.sin((tick + rival.distance) / 90) * 0.003;
+  });
+
+  pickups.forEach((pickup) => {
+    if (pickup.taken) return;
+    const z = pickup.distance - player.distance;
+    if (z > 0 && z < 52 && Math.abs(pickup.lane - player.lane) < 0.28) {
+      pickup.taken = true;
+      player.power = pickup.power;
+      say(`${pickup.power.name} collected! Press Space.`);
+    }
+  });
+
+  hazards.forEach((hazard) => {
+    const z = hazard.distance - player.distance;
+    if (z > 0 && z < 48 && Math.abs(hazard.lane - player.lane) < 0.25 && !player.flying) {
+      if (player.shield) {
+        player.shield = 0;
+        hazard.distance -= 600;
+        say("Heart Shield blocked Bobby Rabbit!");
+      } else {
+        player.speed *= -0.3;
+        hazard.distance -= 700;
+        say("Sabotage hit!");
+      }
+    }
+  });
+
+  if (Math.floor(player.distance) % 900 < 10 && player.speed > 5 && !player.flying) {
+    player.flying = 105;
+    say("Glide ramp! You are flying.");
+  }
+
+  shots.forEach((shot) => {
+    shot.distance += 16;
+    shot.life--;
+    rivals.forEach((rival) => {
+      if (shot.life > 0 && Math.abs(rival.distance - shot.distance) < 60 && Math.abs(rival.lane - shot.lane) < 0.25) {
+        rival.speed *= 0.35;
+        shot.life = 0;
+        say("Sparkle shot landed!");
+      }
+    });
+  });
+  shots = shots.filter((shot) => shot.life > 0);
+
+  updateLeaderboard();
+  if (player.lap > 3) finishRace();
+  updateHud();
+}
+
+function finishRace() {
+  if (finishLocked) return;
+  finishLocked = true;
+  raceActive = false;
+  stars++;
+  const results = getPlacements();
+  leaderboard = results.slice(0, 10);
+  updateLeaderboard();
+  launchConfetti();
+  playStarSound();
+  overlay.classList.remove("hidden");
+  storyKicker.textContent = "You've Got a Star";
+  storyTitle.textContent = results[0].name === characters[selectedCharacter].name ? "1st Place Winner" : "Race Finished";
+  storyText.innerHTML = `${characters[selectedCharacter].name} earned a golden Bloom Star. <span class="star-award">★</span>${buildPodium(results)}`;
+  if (selectedMap < maps.length - 1) {
+    startRace.textContent = "Next Quest";
+    startRace.onclick = () => {
+      selectedMap++;
+      renderMenus();
+      resetRace(false);
+      startRace.onclick = start;
+      start();
+    };
+  } else {
+    startRace.textContent = "Play Again";
+    startRace.onclick = () => {
+      selectedMap = 0;
+      renderMenus();
+      resetRace(false);
+      startRace.onclick = start;
+      start();
+    };
+  }
+  updateHud();
+}
+
+function usePower() {
+  if (!raceActive || !player.power) return;
+  const power = player.power;
+  player.power = null;
+  if (power.type === "boost") player.boost = 150;
+  if (power.type === "shield") player.shield = 360;
+  if (power.type === "wings") player.flying = 150;
+  if (power.type === "shot" || power.type === "bomb") shots.push({ lane: player.lane, distance: player.distance + 80, life: 100, color: power.color });
+  if (power.type === "trap") hazards.push({ lane: player.lane, distance: player.distance + 120, spin: 0 });
+  say(`${power.name} activated!`);
+}
+
+function draw() {
+  const map = maps[selectedMap];
+  drawSky(map);
+  drawRoad(map);
+  drawObjects();
+  drawPlayer();
+  drawConfetti();
+  drawHudBox(map);
+}
+
+function drawSky(map) {
+  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  grad.addColorStop(0, map.colors[0]);
+  grad.addColorStop(0.48, map.colors[1]);
+  grad.addColorStop(1, "#fff7fb");
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(255,255,255,.45)";
+  for (let i = 0; i < 38; i++) {
+    const x = (i * 127 - player.distance * 0.08) % (canvas.width + 90) - 45;
+    const y = 36 + (i * 61) % 245;
+    drawFlower(x, y, i % 2 ? map.colors[3] : "#ffffff", 0.55);
+  }
+}
+
+function drawRoad(map) {
+  const horizon = 210 - (player.flying ? 18 : 0);
+  ctx.fillStyle = map.colors[2];
+  ctx.fillRect(0, horizon, canvas.width, canvas.height - horizon);
+  for (let i = 34; i >= 0; i--) {
+    const near = i / 34;
+    const far = (i + 1) / 34;
+    drawRoadSlice(far, near, i, horizon, map);
+  }
+}
+
+function roadShape(t, horizon) {
+  const y = horizon + t * t * (canvas.height - horizon + 70);
+  const roadW = 58 + t * t * 820;
+  const center = canvas.width / 2 + Math.sin((player.distance / 420) + t * 4.8 + selectedMap) * 95 * (1 - t) - player.lane * 250 * t;
+  return { y, left: center - roadW / 2, right: center + roadW / 2, center, roadW };
+}
+
+function drawRoadSlice(far, near, i, horizon, map) {
+  const a = roadShape(far, horizon);
+  const b = roadShape(near, horizon);
+  ctx.beginPath();
+  ctx.moveTo(a.left, a.y);
+  ctx.lineTo(a.right, a.y);
+  ctx.lineTo(b.right, b.y);
+  ctx.lineTo(b.left, b.y);
+  ctx.closePath();
+  ctx.fillStyle = i % 2 ? "#fff7fb" : "#ffe4f0";
+  ctx.fill();
+  ctx.strokeStyle = "#271c32";
+  ctx.lineWidth = near > 0.94 ? 6 : 3;
+  ctx.stroke();
+  if (i % 3 === 0) {
+    ctx.strokeStyle = map.colors[3];
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo((a.left + a.right) / 2, a.y);
+    ctx.lineTo((b.left + b.right) / 2, b.y);
+    ctx.stroke();
+  }
+}
+
+function drawObjects() {
+  const visible = [];
+  pickups.forEach((item) => !item.taken && visible.push({ ...item, kind: "pickup" }));
+  hazards.forEach((item) => visible.push({ ...item, kind: "hazard" }));
+  rivals.forEach((item) => visible.push({ ...item, kind: "rival" }));
+  shots.forEach((item) => visible.push({ ...item, kind: "shot" }));
+  visible
+    .map((item) => ({ ...item, z: item.distance - player.distance }))
+    .filter((item) => item.z > 10 && item.z < 950)
+    .sort((a, b) => b.z - a.z)
+    .forEach(drawWorldObject);
+}
+
+function drawWorldObject(item) {
+  const t = 1 - item.z / 950;
+  const road = roadShape(Math.max(0.03, t), 210 - (player.flying ? 18 : 0));
+  const x = road.center + item.lane * road.roadW * 0.42;
+  const y = road.y;
+  const s = Math.max(0.24, t * 1.35);
+  if (item.kind === "pickup") drawPowerBox(x, y, s, item.power);
+  if (item.kind === "hazard") drawHazard(x, y, s);
+  if (item.kind === "rival") drawKart(x, y, s, item.character, false);
+  if (item.kind === "shot") drawStar(x, y, 18 * s, item.color);
+}
+
+function drawPlayer() {
+  const y = canvas.height - 96 - (player.flying ? 56 + Math.sin(tick / 8) * 8 : 0);
+  const x = canvas.width / 2 + player.lane * 145;
+  if (player.drift) {
+    ctx.fillStyle = "rgba(255,95,159,.35)";
+    ctx.fillRect(x - 72, y + 82, 144, 22);
+  }
+  if (player.shield) {
+    ctx.strokeStyle = "#ff5f9f";
+    ctx.lineWidth = 6;
+    ctx.strokeRect(x - 72, y - 88, 144, 176);
+  }
+  drawKart(x, y, 1.95, characters[selectedCharacter], true);
+}
+
+function drawKart(x, y, s, character, hero) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(s, s);
+  if (hero) {
+    ctx.fillStyle = "rgba(255, 95, 159, .22)";
+    ctx.fillRect(-50, 40, 100, 24);
+  }
+  ctx.fillStyle = "#271c32";
+  ctx.fillRect(-42, -34, 84, 92);
+  ctx.fillRect(-32, -54, 64, 30);
+  ctx.fillStyle = character.color;
+  ctx.fillRect(-34, -28, 68, 80);
+  ctx.fillStyle = shade(character.color, 26);
+  ctx.fillRect(-24, -48, 48, 24);
+  ctx.fillStyle = character.accent;
+  ctx.fillRect(-21, -15, 42, 29);
+  ctx.fillStyle = "rgba(255,255,255,.72)";
+  ctx.fillRect(-15, -10, 12, 13);
+  ctx.fillRect(4, -10, 12, 13);
+  ctx.fillStyle = "#271c32";
+  ctx.fillRect(-48, 14, 16, 42);
+  ctx.fillRect(32, 14, 16, 42);
+  ctx.fillRect(-45, -38, 16, 28);
+  ctx.fillRect(29, -38, 16, 28);
+  ctx.fillRect(-12, 22, 24, 8);
+  ctx.fillStyle = "#fff0a8";
+  ctx.fillRect(-30, 42, 16, 10);
+  ctx.fillRect(14, 42, 16, 10);
+  ctx.fillStyle = character.accent;
+  ctx.fillRect(-4, -62, 8, 14);
+  ctx.fillRect(-16, -58, 32, 8);
+  if (hero) {
+    ctx.fillStyle = "#fff46a";
+    ctx.fillRect(-24, 57, 48, 10);
+    ctx.fillStyle = "#ff5f9f";
+    ctx.fillRect(-36, -4, 8, 17);
+    ctx.fillRect(28, -4, 8, 17);
+  }
+  ctx.restore();
+}
+
+function drawPowerBox(x, y, s, power) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(s, s);
+  ctx.rotate(tick / 20);
+  ctx.fillStyle = "#271c32";
+  ctx.fillRect(-22, -22, 44, 44);
+  ctx.fillStyle = power.color;
+  ctx.fillRect(-16, -16, 32, 32);
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(-6, -6, 12, 12);
+  ctx.restore();
+}
+
+function drawHazard(x, y, s) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(s, s);
+  ctx.rotate(tick / 15);
+  ctx.fillStyle = "#271c32";
+  ctx.fillRect(-24, -24, 48, 48);
+  ctx.fillStyle = "#352345";
+  ctx.fillRect(-17, -17, 34, 34);
+  ctx.fillStyle = "#ff5f9f";
+  ctx.fillRect(-6, -31, 12, 22);
+  ctx.fillRect(-6, 9, 12, 22);
+  ctx.restore();
+}
+
+function drawFlower(x, y, color, s = 1) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(s, s);
+  ctx.fillStyle = color;
+  ctx.fillRect(-8, -3, 7, 7);
+  ctx.fillRect(4, -3, 7, 7);
+  ctx.fillRect(-2, -10, 7, 7);
+  ctx.fillRect(-2, 4, 7, 7);
+  ctx.fillStyle = "#ffe36d";
+  ctx.fillRect(-2, -3, 7, 7);
+  ctx.restore();
+}
+
+function drawStar(x, y, size, color) {
+  ctx.fillStyle = "#271c32";
+  ctx.fillRect(x - size / 2, y - size / 2, size, size);
+  ctx.fillStyle = color;
+  ctx.fillRect(x - size / 3, y - size / 3, size * 0.66, size * 0.66);
+}
+
+function shade(hex, amount) {
+  const value = hex.replace("#", "");
+  const channels = [0, 2, 4].map((start) => Math.max(0, Math.min(255, parseInt(value.slice(start, start + 2), 16) + amount)));
+  return `rgb(${channels.join(",")})`;
+}
+
+function getPlacements() {
+  return [
+    { name: characters[selectedCharacter].name, distance: player.distance },
+    ...rivals.map((rival) => ({ name: rival.character.name, distance: rival.distance }))
+  ].sort((a, b) => b.distance - a.distance);
+}
+
+function updateLeaderboard() {
+  const rows = (raceActive ? getPlacements() : leaderboard.length ? leaderboard : getPlacements()).slice(0, 10);
+  leaderboardList.innerHTML = rows.map((row) => `<li>${row.name}</li>`).join("");
+}
+
+function buildPodium(results) {
+  const top = results.slice(0, 3);
+  const safe = (text) => text.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+  return `<div class="podium">
+    <div class="podium-step second"><span>2nd</span><b>${safe(top[1]?.name || "Racer")}</b></div>
+    <div class="podium-step first"><span>1st</span><b>${safe(top[0]?.name || "Racer")}</b></div>
+    <div class="podium-step third"><span>3rd</span><b>${safe(top[2]?.name || "Racer")}</b></div>
+  </div>`;
+}
+
+function launchConfetti() {
+  confetti = Array.from({ length: 140 }, (_, i) => ({
+    x: Math.random() * canvas.width,
+    y: -Math.random() * canvas.height * 0.8,
+    size: 5 + Math.random() * 10,
+    speed: 1.8 + Math.random() * 4,
+    drift: -1.6 + Math.random() * 3.2,
+    color: ["#ff5f9f", "#ffe36d", "#6fe7c8", "#82c9ff", "#9d7bff"][i % 5],
+    spin: Math.random() * 6
+  }));
+}
+
+function drawConfetti() {
+  if (!confetti.length) return;
+  confetti.forEach((piece) => {
+    piece.y += piece.speed;
+    piece.x += piece.drift + Math.sin((tick + piece.spin) / 12);
+    if (piece.y > canvas.height + 20) piece.y = -20;
+    ctx.fillStyle = piece.color;
+    ctx.fillRect(piece.x, piece.y, piece.size, Math.max(4, piece.size / 2));
+  });
+}
+
+function drawHudBox(map) {
+  ctx.fillStyle = "rgba(255,255,255,.92)";
+  ctx.fillRect(20, 20, 420, 88);
+  ctx.strokeStyle = "#271c32";
+  ctx.lineWidth = 4;
+  ctx.strokeRect(20, 20, 420, 88);
+  ctx.fillStyle = "#271c32";
+  ctx.font = "900 22px Nunito";
+  ctx.fillText(characters[selectedCharacter].name, 38, 54);
+  ctx.font = "800 16px Nunito";
+  ctx.fillText(messageTimer ? message : map.sabotage, 38, 84);
+  ctx.fillStyle = map.colors[3];
+  ctx.fillRect(canvas.width - 170, 26, 135, 18);
+  ctx.fillStyle = "#271c32";
+  ctx.font = "900 16px Nunito";
+  ctx.fillText(`Speed ${Math.max(0, Math.round(player.speed * 18))}`, canvas.width - 170, 68);
+}
+
+function updateHud() {
+  questHud.textContent = `Quest ${selectedMap + 1} / ${maps.length}`;
+  lapHud.textContent = `Lap ${Math.min(player.lap, 3)} / 3`;
+  powerHud.textContent = `Power: ${player.power ? player.power.name : "none"}`;
+  starHud.textContent = `Stars: ${stars}`;
+}
+
+function say(text) {
+  message = text;
+  messageTimer = 160;
+  beep();
+}
+
+function beep() {
+  if (muted) return;
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+  const audio = new AudioContext();
+  const osc = audio.createOscillator();
+  const gain = audio.createGain();
+  osc.frequency.value = 500 + Math.random() * 240;
+  gain.gain.value = 0.02;
+  osc.connect(gain).connect(audio.destination);
+  osc.start();
+  osc.stop(audio.currentTime + 0.05);
+}
+
+function playToneSequence(notes) {
+  if (muted) return;
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+  const audio = new AudioContext();
+  notes.forEach(([frequency, start, duration, volume]) => {
+    const osc = audio.createOscillator();
+    const gain = audio.createGain();
+    osc.frequency.value = frequency;
+    osc.type = "square";
+    gain.gain.setValueAtTime(volume, audio.currentTime + start);
+    gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + start + duration);
+    osc.connect(gain).connect(audio.destination);
+    osc.start(audio.currentTime + start);
+    osc.stop(audio.currentTime + start + duration);
+  });
+}
+
+function honk() {
+  say("Honk honk!");
+  playToneSequence([
+    [290, 0, 0.14, 0.055],
+    [230, 0.13, 0.17, 0.05]
+  ]);
+}
+
+function playStarSound() {
+  say("You've got a star!");
+  playToneSequence([
+    [523, 0, 0.12, 0.04],
+    [659, 0.12, 0.12, 0.045],
+    [784, 0.24, 0.16, 0.05],
+    [1046, 0.42, 0.34, 0.055]
+  ]);
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+document.addEventListener("keydown", (event) => {
+  keys[event.code] = true;
+  if (event.code === "Space") {
+    event.preventDefault();
+    usePower();
+  }
+  if (event.code === "KeyH") honk();
+});
+
+document.addEventListener("keyup", (event) => {
+  keys[event.code] = false;
+});
+
+document.querySelectorAll("[data-control]").forEach((button) => {
+  const code = { up: "KeyW", down: "KeyS", left: "KeyA", right: "KeyD", drift: "ShiftLeft" }[button.dataset.control];
+  if (code) {
+    button.addEventListener("pointerdown", () => (keys[code] = true));
+    button.addEventListener("pointerup", () => (keys[code] = false));
+    button.addEventListener("pointerleave", () => (keys[code] = false));
+  } else {
+    button.addEventListener("click", usePower);
+  }
+});
+
+document.querySelector("#randomRacer").addEventListener("click", () => {
+  selectedCharacter = Math.floor(Math.random() * characters.length);
+  renderMenus();
+  resetRace(true);
+});
+
+document.querySelector("#muteToggle").addEventListener("click", () => {
+  muted = !muted;
+});
+
+startRace.onclick = start;
+renderMenus();
+resetRace(true);
+loop();
