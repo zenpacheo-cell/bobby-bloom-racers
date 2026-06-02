@@ -11,11 +11,11 @@ Brain Create turns submitted lesson sources into grounded reviewer notes, flashc
 ## Run locally
 
 ```bash
-export OPENAI_API_KEY="your-server-side-key"
-node server.js
+set OPENAI_API_KEY=your-server-side-key
+npm start
 ```
 
-Then open `http://localhost:4174`.
+Then open `http://localhost:4174/brain-create/`.
 
 The API key stays on the server and is never sent to the browser.
 
