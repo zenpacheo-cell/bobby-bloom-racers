@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Brain Create</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700&family=Fraunces:opsz,wght@9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="link-styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#" data-view="home"><span class="brand-mark">BC</span><b>Brain Create</b></a>
+    <p class="side-label">My studio</p>
+    <nav>
+      <button class="nav-item active" data-view="home">⌂ <span>Home</span></button>
+      <button class="nav-item" data-view="create">✦ <span>Create</span></button>
+      <button class="nav-item" data-view="library">▦ <span>My library</span></button>
+    </nav>
+    <div class="sidebar-bottom">
+      <button class="nav-item" data-action="help">? <span>How it works</span></button>
+      <button class="profile profile-button" data-action="profile"><span class="avatar">ZS</span><span><b>Zen Student</b><small>Grade 9 learner</small></span></button>
+    </div>
+  </aside>
+  <main>
+    <header class="topbar">
+      <div><p class="eyebrow" id="pageEyebrow">Your study space</p><h1 id="pageTitle">Good afternoon, Zen.</h1></div>
+      <div class="top-actions"><span class="streak">✦ 4 day streak</span><button class="round-btn" data-action="notifications">♧</button><button class="avatar" data-action="profile">ZS</button></div>
+    </header>
+
+    <section class="view active" id="homeView">
+      <section class="hero">
+        <div><p class="eyebrow">Turn lessons into play</p><h2>Upload. Create.<br><em>Remember more.</em></h2><p>Transform your class materials into quick flashcards and quiz games made for your grade level.</p><button class="primary-btn" data-view="create">+ Make a study set</button></div>
+        <div class="orbit" aria-hidden="true"><div class="orbit-ring"></div><span class="planet p1">π</span><span class="planet p2">Aa</span><span class="planet p3">⚗</span><span class="planet p4">AP</span><strong>✦</strong></div>
+      </section>
+      <section class="section-title"><div><p class="eyebrow">Pick up where you left off</p><h2>Study shelf</h2></div><button class="text-btn" data-view="library">See library →</button></section>
+      <div id="recentSets" class="set-grid"></div>
+      <section class="tip"><span>☼</span><div><p class="eyebrow">Study tip</p><b>Small sessions work.</b><p>Review one set for 10 minutes, then take a short break.</p></div></section>
+    </section>
+
+    <section class="view" id="createView">
+      <section class="section-title"><div><p class="eyebrow">New study set</p><h2>What are we learning today?</h2></div><span class="step-pill" id="stepPill">Step 1 of 3</span></section>
+      <section class="creator panel">
+        <div class="creator-step active" data-step="1">
+          <p class="eyebrow">Start with the basics</p><h3>Choose your class</h3><p class="muted">This helps us match the vocabulary and difficulty to your lesson.</p>
+          <label class="field-label">Grade level</label><div class="choice-row" id="gradeChoices"><button class="choice" data-grade="7">Grade 7</button><button class="choice" data-grade="8">Grade 8</button><button class="choice active" data-grade="9">Grade 9</button><button class="choice" data-grade="10">Grade 10</button></div>
+          <label class="field-label">Subject</label><div class="subject-grid" id="subjectChoices"></div>
+          <button class="primary-btn next" data-action="step-2">Next: add your lesson →</button>
+        </div>
+        <div class="creator-step" data-step="2">
+          <button class="back-btn" data-action="step-1">← Back</button><p class="eyebrow">Add class material</p><h3>Feed your study set</h3><p class="muted">Upload or link your real lesson source. Brain Create will build study tools only from processed source content.</p>
+          <label class="dropzone" for="fileInput"><input id="fileInput" type="file" multiple accept=".pdf,.ppt,.pptx,.doc,.docx,.txt,image/*,video/*"><span>⇧</span><b>Drop files here or click to browse</b><small>PowerPoints, PDFs, docs, pictures, videos, or homework</small></label>
+          <div id="fileList" class="file-list"></div>
+          <div class="link-adder">
+            <div><p class="eyebrow">Or add a link</p><b>Use a lesson video or website</b></div>
+            <form id="linkForm"><input id="linkInput" type="url" placeholder="Paste a YouTube or lesson link" required><button class="outline-btn" type="submit">+ Add link</button></form>
+          </div>
+          <div id="linkList" class="file-list"></div>
+          <textarea id="transcriptInput" hidden></textarea>
+          <label class="field-label" for="studyInstructions">Optional instructions</label>
+          <textarea id="studyInstructions" class="instructions-input" placeholder="Example: Make the quiz harder and focus on important definitions."></textarea>
+          <section id="processingStatus" class="processing-status hidden" aria-live="polite"></section>
+          <button class="primary-btn next" data-action="step-3">Next: choose a mode →</button>
+        </div>
+        <div class="creator-step" data-step="3">
+          <button class="back-btn" data-action="step-2">← Back</button><p class="eyebrow">One last step</p><h3>How do you want to study?</h3><p class="muted">You can use both modes later. Choose one to start with.</p>
+          <div class="mode-grid"><button class="mode-card active" data-mode="flashcards"><span>▤</span><b>Flashcards</b><small>Flip through key ideas at your own pace.</small></button><button class="mode-card" data-mode="quiz"><span>✦</span><b>Quiz game</b><small>Race through questions and build a score.</small></button><button class="mode-card" data-mode="notes"><span>✎</span><b>Reviewer notes</b><small>Read, edit, and copy a lesson reviewer.</small></button><button class="mode-card" data-mode="activities"><span>☑</span><b>Book activities</b><small>Practice with guided workbook tasks.</small></button><button class="mode-card math-only" data-mode="whiteboard"><span>∿</span><b>Math whiteboard</b><small>Work through equations on a drawing board.</small></button></div>
+          <label class="field-label" for="setTitle">Study set title</label><input class="title-input" id="setTitle" placeholder="e.g. Cell Division Review">
+          <button class="primary-btn next" data-action="generate">✦ Create my study set</button>
+        </div>
+      </section>
+    </section>
+
+    <section class="view" id="libraryView"><section class="section-title"><div><p class="eyebrow">Made by you</p><h2>My study library</h2></div><button class="primary-btn" data-view="create">+ New study set</button></section><div id="librarySets" class="set-grid"></div></section>
+    <section class="view" id="studyView"><button class="back-btn" data-view="library">← Back to library</button><section id="studyArea"></section></section>
+  </main>
+  <div id="modal" class="modal-wrap hidden"><section class="modal"><button class="close" data-action="close">×</button><p class="eyebrow" id="modalEyebrow"></p><h2 id="modalTitle"></h2><div id="modalBody"></div></section></div>
+  <div id="toast" class="toast"></div>
+  <script src="game.js?v=profile-1"></script>
+  <script src="app-client.js?v=grounded-1"></script>
+</body>
+</html>
