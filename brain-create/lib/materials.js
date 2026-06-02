@@ -21,8 +21,21 @@ export class SourceError extends Error {
 const dataUrl = file => `data:${file.type};base64,${file.buffer.toString("base64")}`;
 const citation = (source, location, text) => ({ source, location, text });
 const cleanText = text => text.replace(/\r/g, "").replace(/[ \t]+\n/g, "\n").trim();
+const stripHtml = html => cleanText(html
+  .replace(/<script[\s\S]*?<\/script>/gi, " ")
+  .replace(/<style[\s\S]*?<\/style>/gi, " ")
+  .replace(/<[^>]+>/g, " ")
+  .replace(/&nbsp;/g, " ")
+  .replace(/&amp;/g, "&")
+  .replace(/&#39;/g, "'")
+  .replace(/&quot;/g, '"')
+  .replace(/\s+/g, " "));
 const commandExists = async command => {
-  try { await execFile("which", [command]); return true; } catch { return false; }
+  const checks = process.platform === "win32" ? [["where.exe", [command]]] : [["which", [command]]];
+  for (const [name, args] of checks) {
+    try { await execFile(name, args); return true; } catch {}
+  }
+  return false;
 };
 
 export function validateFile(file) {
@@ -116,12 +129,34 @@ export function createProcessor(deps = {}) {
     return { kind: "video-link", name: url, citations: [citation(url, "YouTube captions", text)] };
   }
 
+  async function fetchLinkedSource(url, parsed) {
+    const response = await fetchImpl(url);
+    if (!response.ok) throw new SourceError(`The linked lesson source could not be fetched (${response.status}). Please check the link or upload the file.`);
+    const type = response.headers.get("content-type")?.split(";")[0]?.trim().toLowerCase() || "application/octet-stream";
+    const length = Number(response.headers.get("content-length") || "0");
+    if (length > MAX_FILE_BYTES) throw new SourceError("The linked source is larger than the 25 MB limit. Please upload a smaller file.");
+    const buffer = Buffer.from(await response.arrayBuffer());
+    const name = decodeURIComponent(parsed.pathname.split("/").filter(Boolean).pop() || parsed.hostname).replace(/[^a-z0-9._-]/gi, "_");
+    if (buffer.length > MAX_FILE_BYTES) throw new SourceError("The linked source is larger than the 25 MB limit. Please upload a smaller file.");
+
+    if (imageTypes.has(type)) return processImage({ name, type, buffer });
+    if (videoTypes.has(type)) return processVideo({ name, type, buffer });
+    if (textTypes.has(type) || type === "text/html") {
+      const raw = buffer.toString("utf8");
+      const text = type === "text/html" ? stripHtml(raw) : cleanText(raw);
+      if (!text) throw new SourceError("The linked page did not contain readable lesson text.");
+      return { kind: "document-link", name: url, citations: [citation(url, type === "text/html" ? "page text" : "linked text", text)] };
+    }
+
+    throw new SourceError("This link is not a supported lesson source. Use a direct image, video, text page, or captioned YouTube link.");
+  }
+
   async function processUrl(url) {
     let parsed;
     try { parsed = new URL(url); } catch { throw new SourceError("Please enter a valid http or https lesson URL.", 400); }
     if (!["http:", "https:"].includes(parsed.protocol)) throw new SourceError("Only http and https lesson links are supported.", 400);
     if (/youtu\.be$|youtube\.com$/i.test(parsed.hostname)) return youtubeTranscript(url);
-    throw new SourceError("This external link cannot be processed automatically. Upload the source file or use a captioned YouTube link.");
+    return fetchLinkedSource(url, parsed);
   }
 
   async function processSources({ files = [], urls = [], onStage = () => {} }) {

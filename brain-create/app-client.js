@@ -37,7 +37,9 @@ document.addEventListener("click", async event => {
     form.append("subject", subject(selectedSubject)[1]);
     form.append("instructions", document.querySelector("#studyInstructions").value.trim());
     setTimeout(() => showStatus("extracting text", "Reading source content and preserving useful references..."), 300);
-    const response = await fetch("/api/generate", { method: "POST", body: form });
+    const response = await fetch("/api/generate", { method: "POST", body: form }).catch(error => {
+      throw new Error(error instanceof TypeError ? "Brain Create's processing server is unreachable. Open the app through its Node server, not as a static file." : error.message);
+    });
     const type = response.headers.get("content-type") || "";
     if (!type.includes("application/json")) throw new Error("Brain Create's processing server is not running. Start it with: node server.js");
     const result = await response.json();

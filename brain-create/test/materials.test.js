@@ -38,6 +38,39 @@ test("captioned YouTube links process actual transcript", async () => {
   assert.equal(result.items[0].citations[0].location, "YouTube captions");
 });
 
+test("direct image links are fetched and analyzed", async () => {
+  const fetch = async () => ({
+    ok: true,
+    headers: new Map([["content-type", "image/png"], ["content-length", "5"]]),
+    arrayBuffer: async () => Buffer.from("image")
+  });
+  const processor = createProcessor({ ai, fetch });
+  const result = await processor.processSources({ urls: ["https://example.com/cycle.png"] });
+  assert.match(result.items[0].citations[0].text, /evaporation and condensation/);
+  assert.equal(result.items[0].kind, "image");
+});
+
+test("direct video links are fetched and processed", async () => {
+  const fetch = async () => ({
+    ok: true,
+    headers: new Map([["content-type", "video/mp4"], ["content-length", "5"]]),
+    arrayBuffer: async () => Buffer.from("video")
+  });
+  const processor = createProcessor({
+    ai,
+    fetch,
+    commandExists: async () => true,
+    execFile: async (_command, args) => {
+      const output = args.at(-1);
+      if (output.endsWith(".mp3")) await import("node:fs/promises").then(fs => fs.writeFile(output, "audio"));
+      if (output.endsWith(".jpg")) await import("node:fs/promises").then(fs => fs.writeFile(output, "frame"));
+    }
+  });
+  const result = await processor.processSources({ urls: ["https://example.com/lesson.mp4"] });
+  assert.match(result.items[0].citations[0].text, /carrying capacity/);
+  assert.equal(result.items[0].kind, "video");
+});
+
 test("documents use extraction with structure and page references", async () => {
   const processor = createProcessor({ ai });
   const result = await processor.processSources({ files: [{ name: "ecosystems.pdf", type: "application/pdf", buffer: Buffer.from("pdf") }] });
