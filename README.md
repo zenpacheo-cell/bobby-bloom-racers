@@ -1,15 +1,35 @@
-# Bobby Bloom Racers
+# Brain Create
 
-A girly pixel-art kart racing website game built as a static Vercel-ready app.
+Brain Create turns submitted lesson sources into grounded reviewer notes, flashcards, and quiz questions.
 
-## Play locally
+## Requirements
 
-Open `index.html` in a browser, or run a simple static server:
+- Node.js 20+
+- `OPENAI_API_KEY`
+- Optional: `ffmpeg` for uploaded-video audio extraction and sampled-frame analysis
+
+## Run locally
 
 ```bash
-npx serve .
+export OPENAI_API_KEY="your-server-side-key"
+node server.js
 ```
 
-## Deploy on Vercel
+Then open `http://localhost:4174`.
 
-Import this folder as a Vercel project. No build command is required because the game is static HTML, CSS, and JavaScript.
+The API key stays on the server and is never sent to the browser.
+
+## Test
+
+```bash
+node --test
+```
+
+## Source processing
+
+- Images: vision analysis extracts readable text, tables, labels, diagrams, and visual details.
+- Documents: plain text files are read directly. PDFs, presentations, and Word files are sent for structured extraction and OCR where needed.
+- Uploaded videos: the server uses `ffmpeg` to extract audio and sample frames, then combines transcription and visual analysis.
+- YouTube links: the server uses accessible captions. Videos without accessible captions return a clear error.
+
+Generated materials must use the processed source package. Unsupported or insufficient sources return an error instead of generic subject content.

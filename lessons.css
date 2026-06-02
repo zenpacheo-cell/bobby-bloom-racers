@@ -1,0 +1,13 @@
+.back-btn{border:0;background:none;color:var(--green);padding:0;font-size:12px;font-weight:700}
+.lesson-hero{border-radius:13px;background:var(--accent);color:#fff;margin-top:20px;padding:23px}
+.lesson-hero .eyebrow{color:rgba(255,255,255,.7)}
+.lesson-hero h2{font-size:32px;margin:6px 0}
+.lesson-layout{display:grid;grid-template-columns:1.45fr .8fr;gap:14px;margin-top:14px}
+.lesson-notes p,.assignment-panel p{color:var(--muted);font-size:12px;line-height:1.6}
+.lesson-notes h2,.assignment-panel h2{margin:5px 0 9px}
+.lesson-notes li{color:var(--muted);line-height:1.6;margin-bottom:8px}
+.task-list{display:grid;gap:8px;margin:14px 0}
+.task-list label{display:flex;gap:8px;border-radius:6px;background:var(--mint);padding:10px;color:var(--green);font-size:12px}
+.task-list input{accent-color:var(--green)}
+.code-input{display:block;width:100%;border:1px solid var(--line);border-radius:6px;margin-top:12px;padding:11px}
+@media(max-width:650px){.lesson-layout{grid-template-columns:1fr}}
