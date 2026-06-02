@@ -1,14 +1,19 @@
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
-import { extname, join } from "node:path";
+import { extname, join, normalize, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { assertGroundedMaterials, buildGroundedPrompt, createProcessor, SourceError } from "./lib/materials.js";
 import { openai } from "./lib/openai.js";
 
-const root = fileURLToPath(new URL(".", import.meta.url));
+const brainRoot = fileURLToPath(new URL(".", import.meta.url));
+const siteRoot = normalize(join(brainRoot, ".."));
 const processor = createProcessor({ ai: openai });
 const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json" };
 const json = (res, status, body) => { res.writeHead(status, { "Content-Type": "application/json" }); res.end(JSON.stringify(body)); };
+const within = (base, path) => {
+  const diff = relative(base, path);
+  return diff && diff !== ".." && !diff.startsWith(`..${sep}`);
+};
 
 async function body(req) {
   const chunks = []; let size = 0;
@@ -48,8 +53,18 @@ createServer(async (req, res) => {
   try {
     if (req.method === "POST" && req.url === "/api/generate") return await generate(req, res);
     const pathname = new URL(req.url, "http://localhost").pathname;
-    const requested = pathname === "/" ? "index.html" : pathname.replace(/^\/+/, "");
-    const path = join(root, requested);
+    if (pathname === "/brain-create") {
+      res.writeHead(308, { Location: "/brain-create/" });
+      res.end();
+      return;
+    }
+    const isBrainCreate = pathname === "/brain-create" || pathname.startsWith("/brain-create/");
+    const base = isBrainCreate ? brainRoot : siteRoot;
+    const requested = pathname === "/" || pathname === "/brain-create/"
+      ? "index.html"
+      : pathname.replace(isBrainCreate ? /^\/brain-create\/?/ : /^\/+/, "");
+    const path = normalize(join(base, requested));
+    if (!within(base, path)) throw new SourceError("Not found", 404);
     const file = await readFile(path);
     res.writeHead(200, { "Content-Type": types[extname(path)] || "application/octet-stream" }); res.end(file);
   } catch (error) {

@@ -1,0 +1,9 @@
+{
+  "name": "bobby-bloom-racers",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node brain-create/server.js",
+    "test": "node --test brain-create/test/*.test.js"
+  }
+}
